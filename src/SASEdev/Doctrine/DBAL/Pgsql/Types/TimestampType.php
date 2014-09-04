@@ -4,7 +4,7 @@ namespace SASEdev\Doctrine\DBAL\Pgsql\Types;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
-class Timestamp extends Type
+class TimestampType extends Type
 {
 
     const TIMESTAMP = 'Timestamp';
