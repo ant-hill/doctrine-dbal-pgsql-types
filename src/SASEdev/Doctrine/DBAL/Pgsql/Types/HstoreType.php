@@ -44,10 +44,19 @@ class HstoreType extends Type
             return array();
         }
 
-        $attributes = json_decode('{' . str_replace('"=>"', '":"', $value) . '}', true);
+        $value = preg_replace('/([$])/u', "\\\\$1", $value);
+
+        $hstore = array();
+
+        @eval(sprintf("\$hstore = array(%s);", $value));
+
+            if (!(isset($hstore) and is_array($hstore))) {
+                return array();
+            }
 
         $array = array();
-        foreach ($attributes as $k => $v) {
+
+        foreach ($hstore as $k => $v) {
             if (is_numeric($v)) {
                 if (false === strpos($v, '.')) {
                     $v = (int) $v;
@@ -55,7 +64,7 @@ class HstoreType extends Type
                     $v = (float) $v;
                 }
             } elseif (in_array($v, array('true', 'false'))) {
-                $v = ($v == 'true')?true:false;
+                $v = $v == 'true';
             }
 
             $array[$k] = $v;
