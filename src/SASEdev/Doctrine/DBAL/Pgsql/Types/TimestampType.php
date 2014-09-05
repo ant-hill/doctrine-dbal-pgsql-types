@@ -19,7 +19,7 @@ class TimestampType extends Type
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return self::TIMESTAMP;
+        return "INTEGER";
     }
 
     /**
