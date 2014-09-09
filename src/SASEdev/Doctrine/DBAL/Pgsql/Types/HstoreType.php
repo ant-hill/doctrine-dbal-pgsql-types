@@ -73,7 +73,7 @@ class HstoreType extends Type
     }
 
     /**
-     * @param mixed $value
+     * @param mixed            $value
      * @param AbstractPlatform $platform
      *
      * @return string
@@ -98,14 +98,23 @@ class HstoreType extends Type
             if (!is_string($v) && !is_numeric($v) && !is_bool($v)) {
                 throw new \InvalidArgumentException("Cannot save 'nested arrays' into hstore.");
             }
-            $v = trim($v);
-            if (!is_numeric($v) && false !== strpos($v, ' ')) {
-                $v = sprintf('"%s"', $v);
+            if ($v !== null) {
+                $hstoreString .= "\"{$this->quoteValue($k)}\"=>\"{$this->quoteValue($v)}\",";
+            } else {
+                $hstoreString .= "\"{$this->quoteValue($k)}\"=>NULL,";
             }
-            $hstoreString .= "$k => $v," . "\n";
         }
-        $hstoreString = substr(trim($hstoreString), 0, -1) . "\n";
 
         return $hstoreString;
+    }
+
+    /**
+     * @param $value
+     *
+     * @return string
+     */
+    protected function quoteValue($value)
+    {
+        return addslashes($value);
     }
 }
