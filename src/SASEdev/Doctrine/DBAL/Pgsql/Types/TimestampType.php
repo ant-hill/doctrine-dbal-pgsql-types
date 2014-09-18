@@ -6,8 +6,9 @@ use Doctrine\DBAL\Types\Type;
 
 class TimestampType extends Type
 {
-
     const TIMESTAMP = 'Timestamp';
+
+    const FORMAT = 'Y-m-d H:i:s';
 
     /**
      * Gets the SQL declaration snippet for a field of this type.
@@ -19,7 +20,7 @@ class TimestampType extends Type
      */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
-        return "INTEGER";
+        return "TIMESTAMP without time zone";
     }
 
     /**
@@ -36,8 +37,9 @@ class TimestampType extends Type
         if (!$value) {
             return null;
         }
+
         /* @var $value \DateTime */
-        return $value->getTimestamp();
+        return $value->format(self::FORMAT);
     }
 
     /**
@@ -56,7 +58,7 @@ class TimestampType extends Type
         }
 
         $dateTime = new \DateTime();
-        $dateTime->setTimestamp($value);
+        $dateTime->createFromFormat(self::FORMAT, $value);
 
         return $dateTime;
     }
