@@ -57,10 +57,7 @@ class TimestampType extends Type
             return null;
         }
 
-        $dateTime = new \DateTime();
-        $dateTime->createFromFormat(self::FORMAT, $value);
-
-        return $dateTime;
+        return \DateTime::createFromFormat(self::FORMAT, $value);
     }
 
     /**
